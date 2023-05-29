@@ -3,13 +3,13 @@ package org.example;
 public class Main {
     public static void main(String[] args) {
         test1();
-//        test2();
+        test2();
     }
 
     // Test 1
     private static void test1() {
         /**
-         * 메서드 내 try 문에서 에러가 발생하고 catch에서 잡아 throw를 하지 않으면 그대로 넘어간다.
+         * 메서드 내 try 문에서 에러가 발생하고 catch에서 잡아 throw를 하지 않았기 때문에 그대로 넘어간다.
          */
         System.out.println("-----------------------------------------");
         System.out.println("<소문자를 대문자로 바꾸는 프로그램 - 첫번째 테스트>");
@@ -18,6 +18,9 @@ public class Main {
 
 
         try {
+            /**
+             * 메서드 내 첫번째 코드인 toLowerCase() 메서드에서 NullPointer 발생!!
+             */
             System.out.println("<대문자를 소문자로 바꾸는 프로그램 - 두번째 테스트>");
             strToLowerCase(null); // 예외 발생
             System.out.println("예외 넘어가는지 테스트"); // 안 넘어감
@@ -36,6 +39,7 @@ public class Main {
         }
         finally {
             System.out.println("프로그램 종료");
+            System.out.println("-----------------------------------------");
         }
     }
 
@@ -46,6 +50,7 @@ public class Main {
         }
         catch (Exception e) {
             System.out.println("첫번째 테스트 에러를 catch가 잡아 처리했습니다.");
+//            throw new NullPointerException(); 에러 다시 던지기
         };
     }
 
@@ -59,12 +64,15 @@ public class Main {
     private static void test2() {
         try {
             // Some code that may throw a RuntimeException
-            int result = divide(10, 0);
-            System.out.println("Result: " + result);
+            System.out.println();
+            System.out.println();
+            System.out.println("-----------------------------------------");
+            int result = divide(10, 0); // 에러 발생
+            System.out.println("Result: " + result); // 위의 에러 발생으로 출력안함
         } catch (RuntimeException e) {
-            e.printStackTrace();
             System.out.println("Exception caught: " + e.getMessage());
-//            throw new RuntimeException("Division by zero");
+            System.out.println("-----------------------------------------");
+            e.printStackTrace();
         }
     }
 
