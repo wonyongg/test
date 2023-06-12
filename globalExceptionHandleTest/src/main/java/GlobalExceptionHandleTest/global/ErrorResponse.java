@@ -2,6 +2,8 @@ package GlobalExceptionHandleTest.global;
 
 
 import GlobalExceptionHandleTest.exception.BusinessLogicException;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.validation.BindingResult;
 
 import javax.validation.ConstraintViolation;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Getter // 이곳에 Getter가 없으면 응답값을 가져올 수 없어 적용이 안됨
 public class ErrorResponse {
     private int status;
     private String message;
@@ -51,6 +54,7 @@ public class ErrorResponse {
      * Field Error를 가공하여
      * 필드의 유효성 검증에서 발생하는 에러 정보를 생성
      */
+    @Getter // 이곳에 Getter가 없으면 응답값을 가져올 수 없어 적용이 안됨
     private static class FieldError {
         private String field;
         private Object rejectedValue;
@@ -80,6 +84,7 @@ public class ErrorResponse {
      * ConstratintViolationError 를 가공하여
      * URI 변수 값에 대한 에러 정보를 생성
      */
+    @Getter // 이곳에 Getter가 없으면 응답값을 가져올 수 없어 적용이 안됨
     private static class ConstraintViolationError {
         private String propertyPath;
         private Object rejectedValue;

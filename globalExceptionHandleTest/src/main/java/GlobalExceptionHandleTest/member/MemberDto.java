@@ -2,17 +2,22 @@ package GlobalExceptionHandleTest.member;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class MemberDto {
 
 
     @Builder
     @Getter
+    @Setter
     public static class Post {
+
+        private Long memberId;
 
         @NotBlank
         private String name;
@@ -21,7 +26,7 @@ public class MemberDto {
         private String gender;
 
         @Min(19)
-        @NotBlank
+        @NotNull
         private Long age;
 
         @Email

@@ -29,7 +29,8 @@ public class MemberController {
 
 
     @PostMapping
-    public ResponseEntity postMember(@Validated @RequestBody MemberDto.Post requestBody) {
+    public ResponseEntity postMember(@RequestBody @Validated MemberDto.Post requestBody) {
+        requestBody.setMemberId(1L);
         MemberDto.Response member = memberService.createMember(requestBody);
 
         return new ResponseEntity<>(member, HttpStatus.CREATED);

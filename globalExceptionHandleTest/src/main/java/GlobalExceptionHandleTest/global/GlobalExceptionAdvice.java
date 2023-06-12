@@ -2,7 +2,6 @@ package GlobalExceptionHandleTest.global;
 
 import GlobalExceptionHandleTest.exception.BusinessLogicException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -48,9 +47,9 @@ public class GlobalExceptionAdvice {
      * @return
      */
     @ExceptionHandler
-    public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
+    public ErrorResponse handleBusinessLogicException(BusinessLogicException e) {
         final ErrorResponse response = ErrorResponse.of(e.getExceptionCode().getStatus(), e.getMessage());
 
-        return new ResponseEntity<>(HttpStatus.valueOf(e.getExceptionCode().getStatus()));
+        return response;
     }
 }

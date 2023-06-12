@@ -14,7 +14,7 @@ public class MemberServiceImpl implements MemberService {
         MemberDto.Response response = MemberDto.Response.builder()
                 .memberId(1L)
                 .name(requestBody.getName())
-                .age(requestBody.getAge())
+                .age((long) requestBody.getAge())
                 .gender(requestBody.getGender())
                 .email(requestBody.getEmail()).build();
 
