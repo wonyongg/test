@@ -16,9 +16,11 @@ public class MemberService {
 
         Member member;
         if (postDto.country == null) {
-            member = new Member(postDto.name, postDto.age, LocalDateTime.now());
+//            member = new Member(postDto.name, postDto.age, LocalDateTime.now()); 생성자 메서드
+            member = Member.southKoreaOf(postDto.name, postDto.age, LocalDateTime.now()); // 정적 팩토리 메서드
         } else {
-            member = new Member(postDto.name, postDto.age, postDto.country, LocalDateTime.now());
+//            member = new Member(postDto.name, postDto.age, postDto.country, LocalDateTime.now()); 생성자 메서드
+            member = Member.anotherCountriesOf(postDto.name, postDto.age, postDto.country, LocalDateTime.now()); // 정적 팩토리 메서드
         }
 
         Member savedMember = memberRepository.save(member);
