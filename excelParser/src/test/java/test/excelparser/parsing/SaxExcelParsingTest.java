@@ -17,7 +17,9 @@ public class SaxExcelParsingTest {
 
     @Test
     public void parsing() throws Exception {
-        FileInputStream excelFile = new FileInputStream("/Users/wonyong/study/문서/통합식품영양성분DB_음식_20230509.xlsx");
+
+//        FileInputStream excelFile = new FileInputStream("/Users/wonyong/study/문서/통합식품영양성분DB_음식_20230509.xlsx");
+        FileInputStream excelFile = new FileInputStream("/Users/wonyonghwang/avchain/문서/통합식품영양성분DB_음식_20230509.xlsx");
 
         ExcelSheetHandler excelSheetHandler = ExcelSheetHandler.readExcel(excelFile);
 

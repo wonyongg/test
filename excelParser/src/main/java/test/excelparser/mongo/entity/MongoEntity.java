@@ -1,4 +1,4 @@
-package test.excelparser.entity;
+package test.excelparser.mongo.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +10,14 @@ import java.util.Map;
 @Document(collection = "test")
 @NoArgsConstructor
 @Getter
-public class ExcelData {
+public class MongoEntity {
 
     @Id
     private String id;
 
     private Map<String, String> data;
 
-    public ExcelData(String id, Map<String, String> data) {
+    public MongoEntity(String id, Map<String, String> data) {
         this.id = id;
         this.data = data;
     }
