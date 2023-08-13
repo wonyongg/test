@@ -1,4 +1,4 @@
-package test.responseentity;
+package test.httpTest;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

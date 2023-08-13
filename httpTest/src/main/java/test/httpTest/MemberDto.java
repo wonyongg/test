@@ -1,4 +1,4 @@
-package test.responseentity;
+package test.httpTest;
 
 import lombok.Builder;
 import lombok.Getter;

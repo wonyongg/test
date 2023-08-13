@@ -1,13 +1,13 @@
-package test.responseentity;
+package test.httpTest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ResponseEntityApplication {
+public class httpTestApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ResponseEntityApplication.class, args);
+		SpringApplication.run(httpTestApplication.class, args);
 	}
 
 }

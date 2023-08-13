@@ -1,10 +1,10 @@
-package test.responseentity;
+package test.httpTest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ResponseEntityApplicationTests {
+class httpTestApplicationTests {
 
 	@Test
 	void contextLoads() {

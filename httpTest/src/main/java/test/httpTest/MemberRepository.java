@@ -1,4 +1,4 @@
-package test.responseentity;
+package test.httpTest;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
