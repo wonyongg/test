@@ -9,31 +9,37 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
 public class mongoDbTest {
 
     @Autowired private MongoTemplate mongoTemplate;
 
-    @Test // 변경된 애노테이션
+    @Test
     public void save() throws Exception {
 
+        // 기존 DB 비우기 (ddl-auto : create)
+        mongoTemplate.remove(new Query(), "user");
+
+
+        // 테스트 데이터 생성
         List<User> users = Arrays.asList(
                 new User("Alice", 28, "alice@example.com", new Address("Seoul", "Gangnam", "Korea"), Arrays.asList("reading", "running", "traveling")),
                 new User("Bob", 35, "bob@example.com", new Address("Busan", "Sasang", "Korea"), Arrays.asList("running", "biking")),
                 new User("Charlie", 42, "charlie@example.com", new Address("New York", "NY", "USA"), Arrays.asList("dancing", "traveling")),
                 new User("Dave", 24, "dave@example.com", new Address("London", "London", "UK"), Arrays.asList("hiking", "skiing")),
                 new User("Emily", 31, "emily@example.com", new Address("Paris", "Paris", "France"), Arrays.asList("cooking", "painting"))
-                // Add more data as needed
+
         );
 
+        // 데이터 DB 저장
         mongoTemplate.insertAll(users);
+
+        // 검증
         long userCount = mongoTemplate.count(new Query(), User.class);
         Assertions.assertEquals(users.size(), userCount);
 
