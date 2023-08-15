@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 
 @Embeddable
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Address {
 

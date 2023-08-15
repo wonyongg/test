@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import test.excelparser.postgre.entity.Address;
 import test.excelparser.postgre.entity.Member;
 import test.excelparser.postgre.repository.PostgreRepository;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @SpringBootTest
 @Slf4j
+@Transactional
 public class PostgreDbTest {
 
     @Autowired

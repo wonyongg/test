@@ -11,7 +11,6 @@ import java.util.Map;
 
 @Entity
 @Getter
-@EqualsAndHashCode(exclude = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
