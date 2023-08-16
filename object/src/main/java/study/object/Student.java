@@ -1,6 +1,5 @@
 package study.object;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
