@@ -1,7 +1,6 @@
 package test.excelparser.postgre.entity;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import test.excelparser.converter.HashMapConverter;
@@ -29,6 +28,7 @@ public class Member {
     private Address address;
 
     @Convert(converter = HashMapConverter.class)
+    @Column(columnDefinition = "jsonb_content")
     private Map<String, Object> additionalInfo;
 
     public Member(String name, int age, String phoneNumber, String hobby, Address address, Map<String, Object> additionalInfo) {

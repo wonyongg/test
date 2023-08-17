@@ -23,6 +23,7 @@ public class PostgreDbTest {
     PostgreRepository postgreRepository;
 
     @Test
+    @Rollback(false)
     public void save() throws Exception {
 
         // 테스트 인스턴스 1 생성
@@ -30,6 +31,9 @@ public class PostgreDbTest {
         Map<String, Object> additionalInfo1 = new HashMap<>();
         additionalInfo1.put("주급", 1000);
         additionalInfo1.put("팀", "PSG");
+        additionalInfo1.put("포지션", "AMF");
+        additionalInfo1.put("팀 내 위상", "후보 선수");
+
         Member member1 = new Member( "이강인", 20, "010-1234-5678", "독서", address1, additionalInfo1);
 
         // 테스트 인스턴스 2 생성
@@ -37,13 +41,17 @@ public class PostgreDbTest {
         Map<String, Object> additionalInfo2 = new HashMap<>();
         additionalInfo2.put("주급", 2000);
         additionalInfo2.put("팀", "SPURS");
+        additionalInfo2.put("포지션", "LWF");
+        additionalInfo2.put("팀 내 위상", "핵심선수");
         Member member2 = new Member("손흥민", 28, "010-9876-5432", "게임", address2, additionalInfo2);
 
         // 테스트 인스턴스 3 생성
         Address address3 = new Address("대전시", "서구", "12324");
         Map<String, Object> additionalInfo3 = new HashMap<>();
         additionalInfo3.put("주급", 5000);
-        additionalInfo3.put("팀", "MUNCHEN");
+        additionalInfo3.put("팀", "MUNICH");
+        additionalInfo3.put("포지션", "FW");
+        additionalInfo3.put("팀 내 위상", "방출 대상");
         Member member3 = new Member("해리케인", 23, "010-3982-1657", "영화", address3, additionalInfo3);
 
         // 테스트 인스턴스 4 생성
@@ -51,6 +59,8 @@ public class PostgreDbTest {
         Map<String, Object> additionalInfo4 = new HashMap<>();
         additionalInfo4.put("주급", 1500);
         additionalInfo4.put("팀", "SPURS");
+        additionalInfo4.put("포지션", "SS");
+        additionalInfo4.put("팀 내 위상", "주전");
         Member member4 = new Member("히샬리송", 35, "010-1627-3845", "스포츠", address4, additionalInfo4);
 
         // 테스트 인스턴스 5 생성
@@ -58,6 +68,8 @@ public class PostgreDbTest {
         Map<String, Object> additionalInfo5 = new HashMap<>();
         additionalInfo5.put("주급", 700);
         additionalInfo5.put("팀", "SPURS");
+        additionalInfo5.put("포지션", "CMF");
+        additionalInfo5.put("팀 내 위상", "로테이션");
         Member member5 = new Member("제임스 메디슨", 29, "010-4362-9428", "음악", address5, additionalInfo5);
 
         // Member 엔티티 생성 및 저장
