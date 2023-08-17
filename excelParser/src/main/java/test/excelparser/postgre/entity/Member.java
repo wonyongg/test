@@ -1,15 +1,19 @@
 package test.excelparser.postgre.entity;
 
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import test.excelparser.converter.HashMapConverter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import test.excelparser.excel.converter.HashMapConverter;
 
 import javax.persistence.*;
 import java.util.Map;
 
 @Entity
 @Getter
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
@@ -27,8 +31,8 @@ public class Member {
     @Embedded
     private Address address;
 
-    @Convert(converter = HashMapConverter.class)
-    @Column(columnDefinition = "jsonb_content")
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
     private Map<String, Object> additionalInfo;
 
     public Member(String name, int age, String phoneNumber, String hobby, Address address, Map<String, Object> additionalInfo) {

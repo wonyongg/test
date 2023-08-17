@@ -8,12 +8,16 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: root
+    url: jdbc:mysql://localhost:3306/test?&characterEncoding=UTF-8
+#    url: jdbc:postgresql://localhost:5432/postgres
+    username: test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password:
 
 
 logging:

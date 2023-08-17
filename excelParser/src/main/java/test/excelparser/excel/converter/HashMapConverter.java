@@ -1,4 +1,4 @@
-package test.excelparser.converter;
+package test.excelparser.excel.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

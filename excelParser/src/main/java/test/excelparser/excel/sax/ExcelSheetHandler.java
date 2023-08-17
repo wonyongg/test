@@ -1,4 +1,4 @@
-package test.excelparser.sax;
+package test.excelparser.excel.sax;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class ExcelSheetHandler implements XSSFSheetXMLHandler.SheetContentsHandl
     // -1에 특별한 의미는 없고 단지 0보다는 작아야 한다.
     // check 된 column임을 표시해야 하기 때문에 인덱스 값으로 존재할 수 있는 숫자는 들어가면 안된다.
 
-    private int startRowNum = 4;
+    private int startRowNum = 1;
     // 실제 데이터가 시작되는 Row Number의 인덱스 값. ex) 데이터가 5행부터 시작이면 -1한 값인 index 4
 
     private int currentRowNum = startRowNum - 1; // index 3
