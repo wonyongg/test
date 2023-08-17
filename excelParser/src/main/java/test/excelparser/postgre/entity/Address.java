@@ -1,7 +1,6 @@
 package test.excelparser.postgre.entity;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
