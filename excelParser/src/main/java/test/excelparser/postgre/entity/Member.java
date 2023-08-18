@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import test.excelparser.excel.converter.HashMapConverter;
 
 import javax.persistence.*;
 import java.util.Map;
