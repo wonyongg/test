@@ -14,7 +14,7 @@ import java.util.List;
 
 @SpringBootTest
 @Slf4j
-public class mongoDbTest {
+public class mongoSaveTest {
 
     @Autowired private MongoTemplate mongoTemplate;
 

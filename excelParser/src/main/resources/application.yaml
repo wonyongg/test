@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: postgres
+    active: mysql
 
 ---
 
@@ -49,8 +49,10 @@ spring:
         show_sql: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Seoul
-    username: test
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+
+---
 
 #logging:
 #  level:

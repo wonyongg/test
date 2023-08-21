@@ -9,7 +9,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import test.excelparser.postgre.entity.Address;
 import test.excelparser.postgre.entity.Member;
-import test.excelparser.postgre.repository.PostgreRepository;
+import test.excelparser.postgre.repository.PostgresRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +17,10 @@ import java.util.Map;
 @SpringBootTest
 @Slf4j
 @Transactional
-public class PostgreDbTest {
+public class PostgresSaveTest {
 
     @Autowired
-    PostgreRepository postgreRepository;
+    PostgresRepository postgreRepository;
 
     @Test
     @Rollback(false)
