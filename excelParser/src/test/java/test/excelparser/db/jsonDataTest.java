@@ -51,24 +51,24 @@ public class jsonDataTest {
     @Test
     public void findJsonKeyPostgresSpeed() {
         //given
-        String key = "문자열6";
+        String key = "문자열4";
         String value = "토마토";
-        String key2 = "문자열7";
+        String key2 = "문자열5";
         String value2 = "참외";
-        String key3 = "문자열8";
+        String key3 = "문자열6";
         String value3 = "사과";
 
         //when
         long startTime = System.nanoTime(); // 시간 측정 시작
-        List<ExcelData> excelDataList = excelDataRepository.findByJsonKeyAndValue(key, value); // 단일키 조회
+//        List<ExcelData> excelDataList = excelDataRepository.findByJsonKeyAndValue(key, value); // 단일키 조회
 //        List<ExcelData> excelDataList = excelDataRepository.findByJsonKeyAndValue2(key, value, key2, value2); // 복합키 2 개 조회
-//        List<ExcelData> excelDataList = excelDataRepository.findByJsonKeyAndValue3(key, value, key2, value2, key3, value3); // 복합키 3 개 조회
+        List<ExcelData> excelDataList = excelDataRepository.findByJsonKeyAndValue3(key, value, key2, value2, key3, value3); // 복합키 3 개 조회
         long endTime = System.nanoTime(); // 시간 측정 종료
         long millis = TimeUnit.NANOSECONDS.toMillis(endTime - startTime); // 나노초 -> 밀리초 변환
 
         //then
 //        System.out.println("name : " + excelDataList.get(0).getName());
-        System.out.println("total time : " + millis);
+        System.out.println("total time : " + millis + "ms");
     }
 
     @Test
@@ -107,11 +107,11 @@ public class jsonDataTest {
     @Test
     public void findJsonKeyMysqlSpeed() {
         //given
-        String key = "문자열6";
+        String key = "문자열4";
         String value = "토마토";
-        String key2 = "문자열7";
+        String key2 = "문자열5";
         String value2 = "참외";
-        String key3 = "문자열8";
+        String key3 = "문자열6";
         String value3 = "사과";
 
         //when
@@ -124,6 +124,6 @@ public class jsonDataTest {
 
         //then
 //        System.out.println("name : " + excelDataList.get(0).getName());
-        System.out.println("total time : " + millis);
+        System.out.println("total time : " + millis + "ms");
     }
 }

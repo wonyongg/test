@@ -27,5 +27,4 @@ public interface ExcelDataRepository extends JpaRepository<ExcelData, Long> {
 
     @Query(value = "SELECT * FROM excel_data WHERE JSON_EXTRACT(json_data, CONCAT('$.\"', :key, '\"')) = :value OR JSON_EXTRACT(json_data, CONCAT('$.\"', :key2, '\"')) = :value2 OR JSON_EXTRACT(json_data, CONCAT('$.\"', :key3, '\"')) = :value3", nativeQuery = true)
     List<ExcelData> findByJsonKeyAndValueMysql3(@Param("key") String key, @Param("value") String value, @Param("key2") String key2, @Param("value2") String value2, @Param("key3") String key3, @Param("value3") String value3);
-
 }

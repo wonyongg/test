@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: mysql
+    active: postgres
 
 ---
 
@@ -51,6 +51,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/test
     username: root
+
 
 ---
 

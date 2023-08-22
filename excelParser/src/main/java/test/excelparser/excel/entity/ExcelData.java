@@ -12,8 +12,8 @@ import javax.persistence.*;
 
 @Entity(name = "excel_data")
 @Getter
-//@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-@TypeDef(name = "json", typeClass = JsonType.class)
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+//@TypeDef(name = "json", typeClass = JsonType.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ExcelData {
 
@@ -24,11 +24,11 @@ public class ExcelData {
     private String name;
 
     private String phone;
-//
-//    @Type(type = "jsonb")
-//    @Column(name = "json_data", columnDefinition = "jsonb")
-    @Type(type = "json")
-    @Column(name = "json_data", columnDefinition = "json")
+
+    @Type(type = "jsonb")
+    @Column(name = "json_data", columnDefinition = "jsonb")
+//    @Type(type = "json")
+//    @Column(name = "json_data", columnDefinition = "json")
     private String jsonData;
 
     private ExcelData(String name, String phone, String jsonData) {
