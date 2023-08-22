@@ -1,15 +1,19 @@
 package test.excelparser.excel.entity;
 
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 
 @Entity(name = "excel_data")
 @Getter
 //@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@TypeDef(name = "json", typeClass = JsonType.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ExcelData {
 
@@ -20,7 +24,9 @@ public class ExcelData {
     private String name;
 
     private String phone;
-
+//
+//    @Type(type = "jsonb")
+//    @Column(name = "json_data", columnDefinition = "jsonb")
     @Type(type = "json")
     @Column(name = "json_data", columnDefinition = "json")
     private String jsonData;
