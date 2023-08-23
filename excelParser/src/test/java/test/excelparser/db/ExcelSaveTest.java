@@ -22,8 +22,8 @@ public class ExcelSaveTest {
 
     @Test
     public void save() throws Exception {
-//        FileInputStream excelFile = new FileInputStream("/Users/wonyonghwang/avchain/문서/더미 회원 데이터5만.xlsx"); // 회사
-        FileInputStream excelFile = new FileInputStream("/Users/wonyong/study/문서/더미 회원 데이터5만.xlsx"); //집
+        FileInputStream excelFile = new FileInputStream("/Users/wonyonghwang/avchain/문서/더미 회원 데이터5만.xlsx"); // 회사
+//        FileInputStream excelFile = new FileInputStream("/Users/wonyong/study/문서/더미 회원 데이터5만.xlsx"); //집
 
         ExcelSheetHandler excelSheetHandler = ExcelSheetHandler.readExcel(excelFile);
 

@@ -16,6 +16,7 @@ services:
     image: 'mysql'
     volumes:
       - data:/data/mysql
+      - ./excel_data.sql:/docker-entrypoint-initdb.d/excel_data.sql
     env_file:
       - ./env/mysql.env
     ports:
