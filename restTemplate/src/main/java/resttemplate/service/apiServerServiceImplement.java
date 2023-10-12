@@ -3,15 +3,21 @@ package resttemplate.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import resttemplate.interceptor.CustomInterceptor;
 import resttemplate.dto.Dto;
 
+@Service
+@RequiredArgsConstructor
+@Primary
 public class apiServerServiceImplement implements ServerService {
+
+    private final RestTemplate restTemplate;
 
     public Dto.Response check(Dto.Post post) throws JsonProcessingException {
 
@@ -49,9 +55,6 @@ public class apiServerServiceImplement implements ServerService {
 
         if (point >= 3) {
 
-            RestTemplate restTemplate = new RestTemplateBuilder()
-                    .interceptors(new CustomInterceptor())
-                    .build();
 
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Type", "application/json");
