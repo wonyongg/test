@@ -30,7 +30,8 @@ public class Controller {
                 .scoutStatus("interested")
                 .build();
 
-        TimeUnit.SECONDS.sleep(7);
+//        TimeUnit.SECONDS.sleep(6); // ReadTimeout
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
