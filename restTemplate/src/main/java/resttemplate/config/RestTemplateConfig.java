@@ -5,11 +5,22 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 import resttemplate.interceptor.HttpClientInterceptor;
 
+import java.net.URI;
 import java.time.Duration;
-
+@EnableRetry
 @Configuration
 public class RestTemplateConfig {
 
@@ -22,13 +33,38 @@ public class RestTemplateConfig {
     }
 
     @Bean
-    org.springframework.web.client.RestTemplate restTemplate(HttpClient httpClient, RestTemplateBuilder builder) {
+    RestTemplate restTemplate(HttpClient httpClient, RestTemplateBuilder builder) {
 
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        requestFactory.setHttpClient(httpClient);
+        HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        httpComponentsClientHttpRequestFactory.setHttpClient(httpClient);
+
+        /**
+         * Attempted read from closed stream 에러 방지
+         * requestBody는 Stream이므로 소비가 되면 사라지는 (byte array가 비워진다) 특징이 있다.
+         *
+         * 이렇게 되면 인터셉터에서 이 requestBody를 읽어버리면 Presentation Layer에서 요청의 requestBody를 읽을 수 없게 되기 때문에 문제가 된다.
+         */
+        BufferingClientHttpRequestFactory bufferingClientHttpRequestFactory = new BufferingClientHttpRequestFactory(
+                httpComponentsClientHttpRequestFactory);
+
+        RestTemplate restTemplate = new RestTemplate(bufferingClientHttpRequestFactory) {
+            @Override
+            @Retryable(value = RestClientException.class, maxAttempts = 2, backoff = @Backoff(delay = 1000))
+            public <T> ResponseEntity<T> exchange(URI url, HttpMethod method, HttpEntity<?> requestEntity,
+                                                  Class<T> responseType) throws RestClientException {
+
+                return super.exchange(url, method, requestEntity, responseType);
+            }
+
+            @Recover
+            public <T> ResponseEntity<String> exchangeRecover(RestClientException e) {
+                return  ResponseEntity.badRequest().body("### 2회의 요청을 전부 실패했습니다.");
+            }
+        };
+
 
         return builder
-                .requestFactory(() -> requestFactory) // 파라미터 없이 결과값으로 request Factory 반환
+                .requestFactory(() -> bufferingClientHttpRequestFactory) // 파라미터 없이 결과값으로 request Factory 반환
                 .setConnectTimeout(Duration.ofMillis(3000)) //  HTTP 요청을 시작하고 서버와의 TCP 핸드셰이크를 완료하는 데 허용되는 시간을 설정
                 .setReadTimeout(Duration.ofMillis(5000)) //  HTTP 요청이 서버에 도착한 후, 응답을 받아오는데 걸리는 시간을 설정
                 .interceptors(new HttpClientInterceptor()) // HTTP 요청 및 응답을 로깅

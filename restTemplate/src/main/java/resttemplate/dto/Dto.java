@@ -16,8 +16,9 @@ public class Dto {
     public static class Response {
 
         private String name;
+        private String team;
+        private int overall;
         private String scoutStatus;
         private int point;
-        private boolean managerCheck;
     }
 }

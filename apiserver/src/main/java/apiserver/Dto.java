@@ -18,6 +18,7 @@ public class Dto {
 
         private String name;
         private String scoutStatus;
-        private int point;
+        private String team;
+        private int overall;
     }
 }

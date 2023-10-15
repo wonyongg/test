@@ -1,13 +1,17 @@
 package resttemplate.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import resttemplate.entity.Player;
 import resttemplate.repository.ScoutListRepository;
 import resttemplate.dto.Dto;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
+//@Primary
 public class oneServerServiceImplement implements ServerService {
 
     private final ScoutListRepository scoutListRepository;
@@ -49,12 +53,13 @@ public class oneServerServiceImplement implements ServerService {
         if (point >= 3) {
             Player addedPlayer = Player.addPlayer(post.getName(), playerAge, post.getTeam(), playerOverall);
 
-            scoutListRepository.save(addedPlayer);
+            Player savedPlayer = scoutListRepository.save(addedPlayer);
             return Dto.Response.builder()
-                               .name(post.getName())
+                               .name(savedPlayer.getName())
                                .point(point)
                                .scoutStatus("interested")
-                               .managerCheck(false)
+                               .team(savedPlayer.getTeam())
+                               .overall(savedPlayer.getOverall())
                                .build();
         }
 
@@ -62,7 +67,18 @@ public class oneServerServiceImplement implements ServerService {
                 .name(post.getName())
                 .point(point)
                 .scoutStatus("Not interested")
-                .managerCheck(false)
+                .team(post.getTeam())
+                .overall(playerOverall)
                 .build();
+    }
+
+    @Override
+    public List<Dto.Response> getList() {
+        return null;
+    }
+
+    @Override
+    public Dto.Response getPlayer(String name, String team) {
+        return null;
     }
 }
