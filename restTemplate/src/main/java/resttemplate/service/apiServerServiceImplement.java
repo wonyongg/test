@@ -140,12 +140,13 @@ public class apiServerServiceImplement implements ServerService {
     }
 
     @Override
+    @Retryable
     public Dto.Response getPlayer(String name, String team) throws JsonProcessingException {
 
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
                 .fromHttpUrl("http://localhost:30000/players")
-                .queryParam("name", "son")
-                .queryParam("team", "tottenham");
+                .queryParam("name", name)
+                .queryParam("team", team);
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(uriComponentsBuilder.toUriString(), HttpMethod.GET,
                                                                 null, String.class);
