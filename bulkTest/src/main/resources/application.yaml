@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 1
+        dialect: org.hibernate.dialect.MySQL8Dialect
+#        show_sql: true
+# &profileSQL=true&logger=Slf4JLogger&maxQuerySizeToLog=999999
+  datasource:
+    url: jdbc:mysql://localhost:33060/test?rewriteBatchedStatements=true # batch 용
+    username: root
