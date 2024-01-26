@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        #        dialect.storage_engine: InnoDB
+        show_sql: true
+    # ddl-auto ?? Stub Data? ??
+    defer-datasource-initialization: true
+
+  datasource:
+    url: jdbc:mysql://localhost:33060/test
+    username: root
