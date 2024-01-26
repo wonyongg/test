@@ -17,6 +17,8 @@ public class Controller {
 
     private final ScoutListRepository scoutListRepository;
 
+    private final Service service;
+
     @PostMapping("/saves")
     public ResponseEntity checkMember(@RequestBody Dto.Post post) throws InterruptedException {
 
@@ -71,6 +73,16 @@ public class Controller {
                 .team(player.getTeam())
                 .overall(player.getOverall())
                 .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/saves/transaction")
+    public ResponseEntity post(@RequestBody Dto.Post post) throws InterruptedException {
+
+        Dto.Response response = service.post(post);
+
+//        TimeUnit.SECONDS.sleep(6); // ReadTimeout
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
