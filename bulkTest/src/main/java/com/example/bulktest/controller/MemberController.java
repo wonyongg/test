@@ -2,6 +2,7 @@ package com.example.bulktest.controller;
 
 import com.example.bulktest.dto.Dto;
 import com.example.bulktest.entity.Member;
+import com.example.bulktest.repository.BatchInsert2Repository;
 import com.example.bulktest.repository.BatchInsertRepository;
 import com.example.bulktest.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class MemberController {
     private final StopWatch stopWatch = new StopWatch();
     private final MemberRepository memberRepository;
     private final BatchInsertRepository batchInsertRepository;
+    private final BatchInsert2Repository batchInsert2Repository;
 
     @PostMapping("/save/json")
     public ResponseEntity<?> saveJsonData(@RequestBody Dto.Request request) {
@@ -81,7 +83,7 @@ public class MemberController {
         System.out.println(memberList.size());
 
 
-        batchInsertRepository.memberSaveAll(memberList, 1000);
+        batchInsertRepository.memberSaveAll(memberList, 100000);
         stopWatch.stop();
 
         log.info("save json batch success, 성능 측정 걸린시간: {}/sec" , stopWatch.getTotalTimeSeconds());

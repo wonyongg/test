@@ -7,3 +7,11 @@ services:
     image: 'mysql:8'
     ports:
       - "33060:3306"
+    volumes:
+      - test:/data/mysql
+      - ./env/init.sql:/docker-entrypoint-initdb.d/init.sql # 초기 데이터 삽입 관련
+    env_file:
+      - ./env/mysql.env
+
+volumes:
+  test:
