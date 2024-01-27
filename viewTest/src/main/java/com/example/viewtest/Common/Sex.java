@@ -1,5 +1,8 @@
 package com.example.viewtest.Common;
 
+import lombok.Getter;
+
+@Getter
 public enum Sex {
     MAN("남자"),
     WOMAN("여자"),
@@ -11,7 +14,4 @@ public enum Sex {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
 }
