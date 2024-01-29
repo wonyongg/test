@@ -10,6 +10,8 @@ import com.example.viewtest.repository.ViewRepository;
 import com.example.viewtest.repository.ViewSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -63,7 +65,8 @@ public class SearchController {
             @RequestParam(value = "minAge", required = false) Integer minAge,
             @RequestParam(value = "maxAge", required = false) Integer maxAge,
             @RequestParam(value = "sex", required = false) Sex sex,
-            @RequestParam(value = "city", required = false) String city
+            @RequestParam(value = "city", required = false) String city,
+            Pageable pageable
     ) {
 
         Specification<View> spec = (root, query, criteriaBuilder) -> null;
@@ -88,10 +91,8 @@ public class SearchController {
             spec = spec.and(ViewSpecification.equalsCity(city));
         }
 
-        List<View> searchList = viewRepository.findAll(spec);
+        Page<View> response = viewRepository.findAll(spec, pageable);
 
-        ViewDto.ResponseDtoList response = new ViewDto.ResponseDtoList();
-        response.setResponseDtoList(searchList);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Immutable;
 @Getter
 @Entity
 @Table(name = "test_view")
-//@Immutable
+@Immutable
 public class View {
 
     @Id
