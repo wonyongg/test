@@ -3,11 +3,14 @@ package com.example.viewtest.Entity;
 import com.example.viewtest.Common.Sex;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+//@EqualsAndHashCode(of = {"memberId"})
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
