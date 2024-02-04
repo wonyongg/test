@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,6 @@ import java.util.List;
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long teamId;
 
     @Column
@@ -26,13 +26,14 @@ public class Team {
     @OneToMany(mappedBy = "team")
     List<Member> memberList = new ArrayList<>();
 
-    private Team(String name, String city) {
+    private Team(Long teamId, String name, String city) {
+        this.teamId = teamId;
         this.name = name;
         this.city = city;
     }
 
-    public static Team createTeamOf(String name, String city) {
-        return new Team(name, city);
+    public static Team createTeamOf(Long teamId, String name, String city) {
+        return new Team(teamId, name, city);
     }
 
     public void addMember(List<Member> memberList) {

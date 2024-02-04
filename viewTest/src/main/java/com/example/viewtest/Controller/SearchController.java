@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,42 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class SearchController {
 
-    private final MemberRepository memberRepository;
     private final ViewRepository viewRepository;
-
-    @GetMapping("/members")
-    public ResponseEntity<?> getAllMembers() {
-
-        List<Member> memberList = memberRepository.findAll();
-        log.info("memberList.size() : " + memberList.size());
-
-        List<MemberDto.ResponseDto> responseDtoList = new ArrayList<>();
-
-        for (Member member : memberList) {
-            responseDtoList.add(
-                    MemberDto.ResponseDto
-                            .builder()
-                            .memberId(member.getMemberId())
-                            .teamId(member.getTeam().getTeamId())
-                            .name(member.getName())
-                            .sex(member.getSex())
-                            .build()
-            );
-        }
-        MemberDto.ResponseDtoList response = new MemberDto.ResponseDtoList();
-        response.setResponseDtoList(responseDtoList);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
     @GetMapping("/views")
     public ResponseEntity<?> getSearchResults(

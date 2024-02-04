@@ -2,24 +2,15 @@ package com.example.viewtest.Entity;
 
 import com.example.viewtest.Common.Sex;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
-//@EqualsAndHashCode(of = {"memberId"})
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
-
-    @Column
-    private String name;
+    @EmbeddedId
+    private MemberCompositeKey memberCompositeKey;
 
     @Column
     private int age;
@@ -30,13 +21,9 @@ public class Member {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    private Member(String name, int age, Sex sex) {
-        this.name = name;
+    public Member(MemberCompositeKey memberCompositeKey, int age, Sex sex) {
+        this.memberCompositeKey = memberCompositeKey;
         this.age = age;
         this.sex = sex;
-    }
-
-    public static Member createMemberOf(String name, int age, Sex sex) {
-        return new Member(name, age, sex);
     }
 }
