@@ -1,4 +1,4 @@
-package org.example.websockettest;
+package org.example.websockettest.websocket;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

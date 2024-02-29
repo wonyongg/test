@@ -1,0 +1,22 @@
+# Service Post config
+server:
+  port: 9091
+
+# Log Level config
+logging:
+  level:
+    root: info
+
+# RabbitMQ connection info
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+# RabbitMQ queue, exchange, routing-key info
+rabbitmq:
+  queue.name: sample.queue
+  exchange.name: sample.exchange
+  routing.key: sample.key

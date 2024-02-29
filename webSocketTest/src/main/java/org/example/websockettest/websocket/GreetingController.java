@@ -1,4 +1,4 @@
-package org.example.websockettest;
+package org.example.websockettest.websocket;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
