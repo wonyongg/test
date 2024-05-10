@@ -19,8 +19,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+
+        // 세션의 ID는 서버가 클라이언트와의 WebSocket 연결을 수립할 때 자동으로 생성(StandardWebSocketSession -> 생성자 this.id = idGenerator.generateId().toString();)
         String sessionId = session.getId();
-        sessionMap.put(sessionId, session); // 세션 저장
+
+        // 세션 저장
+        sessionMap.put(sessionId, session);
 
         sessionMap.values().forEach(s -> {
             try {
@@ -47,7 +51,16 @@ public class WebSocketHandler extends TextWebSocketHandler {
         // /귓속말:(sessionId) (내용) <- 개인 메시지 양식
         if (textMessagePayload.contains("/귓속말")) {
             st = new StringTokenizer(textMessagePayload, " ");
-            String receiverSessionId = st.nextToken().replaceAll("/귓속말:", "");
+            String partialReceiverSessionId = st.nextToken().replaceAll("/귓속말:", "");
+
+            // 세션 id의 일부분만을 가지고 전체 세션 id를 찾는 코드
+            // 중복 가능성이 있지만 보다 짧은 세션 id 사용을 위해 적용
+            String receiverSessionId = "";
+            for (Map.Entry<String, WebSocketSession> entry : sessionMap.entrySet()) {
+                if (entry.getKey().contains(partialReceiverSessionId)) {
+                    receiverSessionId = entry.getKey();
+                }
+            }
 
             // 특정 개인에게 메시지 전달
             WebSocketSession receiver = sessionMap.get(receiverSessionId);
