@@ -1,24 +1,26 @@
 package org.example.websockettest.stomp;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MessageController {
 
     private final SimpMessageSendingOperations simpMessageSendingOperations;
 
-    /**
-     * /sub/channel/123 - 구독123)
-     * /pub/hello
-     */
+    @MessageMapping("/chat")
+    public void message(@RequestBody Message message) {
 
-    @MessageMapping("/hello")
-    public void message(Message message) {
-
-        simpMessageSendingOperations.convertAndSend("/sub/channel/" + message.getChannelId(), message);
+        log.info("message : {}", message);
+        log.info("message.getChannelName() : {}", message.getChannelName());
+        log.info("message.getContent() : {}", message.getContent());
+        simpMessageSendingOperations.convertAndSend("/sub/channel/" + message.getChannelName(), message);
     }
 }
