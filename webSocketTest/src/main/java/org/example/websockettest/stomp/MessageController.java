@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -32,10 +33,33 @@ public class MessageController {
     private final List<String> channelList = new ArrayList<>();
 
     @SubscribeMapping("/user-count")
-    public int getInitialUserList() {
+    public int getInitialUserCount() {
         // 채널 리스트를 가져오는 로직
 
         return webSocketEventListener.getTotalSubscriberCount();
+    }
+
+    @SubscribeMapping("/user-list")
+    public Map<String, String> getInitialUserList() {
+        // 채널 리스트를 가져오는 로직
+
+        return sessionMap;
+    }
+
+    @MessageMapping("/enroll")
+    public void enroll(@RequestBody Enroll enroll) {
+
+        if (!(sessionMap.containsValue(enroll.getNickname()))) {
+            sessionMap.put(enroll.getSessionId(), enroll.getNickname());
+
+            simpMessageSendingOperations.convertAndSend("/sub/user-list", sessionMap);
+        } else {
+//            simpMessageSendingOperations.convertAndSend("/sub/user-list", "DUPLICATED");
+        }
+
+        for (String value : sessionMap.values()) {
+            log.info("value : {}", value);
+        }
     }
 
     @MessageMapping("/channel-list")

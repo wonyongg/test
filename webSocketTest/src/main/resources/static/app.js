@@ -17,6 +17,26 @@ function connect() {
         userSessionId = crypto.randomUUID();
         $("#user_name").html("닉네임: " + currentNickname);
 
+        var enroll = {
+            nickname: currentNickname,
+            sessionId: userSessionId
+        }
+
+        stompClient.send("/pub/enroll", {}, JSON.stringify(enroll));
+
+        stompClient.subscribe('/sub/user-list', function (message) {
+            const response = JSON.parse(message.body)
+            console.log("!!! : " + response);
+            if (response === "DUPLICATED") {
+                alert("이미 등록된 닉네임입니다.")
+            } else {
+                $("#current_user_list").empty();
+                Object.values(response).forEach((value) => {
+                    $("#current_user_list").append("<li>" + value +"</li>");
+                });
+            }
+        });
+
         stompClient.subscribe('/sub/user-count', function (message) {
             let count = JSON.parse(message.body);
             $("#user-count").empty();
@@ -181,6 +201,14 @@ $(function () {
             alert("닉네임이 제대로 입력되지 않았습니다.(\"\", \" \" 등 빈 값은 입력될 수 없습니다.)")
         } else {
             $("#user_name").html("닉네임: " + currentNickname);
+
+            var enroll = {
+                nickname: currentNickname,
+                sessionId: userSessionId
+            }
+
+            stompClient.send("/pub/enroll", {}, JSON.stringify(enroll));
+
             alert("닉네임이 '" + currentNickname + "'(으)로 변경되었습니다.");
         }
     });

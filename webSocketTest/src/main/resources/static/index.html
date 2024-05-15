@@ -22,16 +22,24 @@
                         <h5 id="channel_name">채널명: </h5>
                         <h5 id="user_name">닉네임: </h5>
                     </div>
-                    <!-- 채널 추가 시 보이도록 -->
-                    <div class="channel-list">
-                        <span id="user-count"></span>
-                        <div class="channel-list-box">
-                            <h5>채널 리스트</h5>
-                            <ul id="activated_channel_list"></ul>
+                    <div class="list-container">
+                        <div class="user-list">
+                            <div class="user-list-box">
+                                <h5>유저 목록</h5>
+                                <ul id="current_user_list"></ul>
+                            </div>
+                            <span id="user-count"></span>
                         </div>
-                        <div class ="form-group-hidden" id="channel_change">
-                            <input type="text" id="room_name" class="form-control" placeholder="채널명 변경">
-                            <button id="enter_room" class="btn btn-primary" type="button" disabled="disabled">이동하기</button>
+                        <!-- 채널 추가 시 보이도록 -->
+                        <div class="channel-list">
+                            <div class="channel-list-box">
+                                <h5>채널 리스트</h5>
+                                <ul id="activated_channel_list"></ul>
+                            </div>
+                            <div class ="form-group-hidden" id="channel_change">
+                                <input type="text" id="room_name" class="form-control" placeholder="채널명 변경">
+                                <button id="enter_room" class="btn btn-primary" type="button" disabled="disabled">이동하기</button>
+                            </div>
                         </div>
                     </div>
                 </div>
