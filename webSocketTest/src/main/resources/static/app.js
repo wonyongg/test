@@ -3,22 +3,6 @@ var subscriptionChannel = null;
 var currentNickname = null;
 var userSessionId = null;
 
-function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
-    $("#enter_room").prop("disabled", !connected); // 이동하기 버튼
-    $("#send").prop("disabled", !connected); // 보내기 버튼
-    $("#nickname").prop("disabled", !connected); // 닉네임 설정 버튼
-
-    if (connected) {
-        $("#conversation").show();
-    }
-    else {
-        $("#conversation").hide();
-    }
-    $("#messages").html("");
-}
-
 function connect() {
 
     var socket = new SockJS('/stomp');
@@ -26,8 +10,33 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        subscribeToChannel(); // 클라이언트가 연결되면 구독 채널에 자동으로 구독합니다.
+        // subscribeToChannel(); // 클라이언트가 연결되면 구독 채널에 자동으로 구독합니다.
+
+        // 유저 닉네임, 세션 아이디 생성 후 서버 등록
+        currentNickname = generateRandomString();
+        userSessionId = crypto.randomUUID();
+        $("#user_name").html("닉네임: " + currentNickname);
+
+        stompClient.subscribe('/sub/user-count', function (message) {
+            let count = JSON.parse(message.body);
+            $("#user-count").empty();
+            $("#user-count").append("접속 중인 유저 수 : " + count);
+        });
+
+        get_channel();
     });
+}
+
+function generateRandomString() {
+    // 숫자와 알파벳을 포함하는 문자열 정의
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < 6; i++) {
+        // 문자열에서 무작위로 문자를 선택하여 결과에 추가
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
 function disconnect() {
@@ -38,10 +47,67 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function subscribeToChannel() {
-    var channel = prompt("구독할 채널을 입력하세요."); // 최초에 사용자로부터 구독할 채널을 입력받습니다.
+function setConnected(connected) {
+    $("#connect").prop("disabled", connected);
+    $("#disconnect").prop("disabled", !connected);
+    $("#enter_room").prop("disabled", !connected); // 이동하기 버튼
+    $("#send").prop("disabled", !connected); // 보내기 버튼
+    $("#nickname").prop("disabled", !connected); // 닉네임 설정 버튼
 
-    enter_channel(channel);
+    if (connected) {
+        // 연결 시 버튼 활성화
+        $('.form-group-hidden').css('display', 'block');
+    }
+    else {
+        // 연결 시 버튼 활성화
+        $('.form-group-hidden').css('display', 'none');
+        $("#user-count").empty();
+    }
+    $("#messages").html("");
+}
+
+function get_channel() {
+
+    stompClient.subscribe("/sub/channel-list", function (channel_list) {
+        // channel_list.body를 JSON 배열로 파싱
+        const channelList = JSON.parse(channel_list.body);
+        // 파싱된 데이터가 배열인지 확인
+        if (Array.isArray(channelList)) {
+            console.log("기존 항목 초기화");
+            $("#activated_channel_list").empty();
+            // 배열의 각 요소(채널)를 순회하며 <li> 태그로 추가
+            channelList.forEach((channel) => {
+                console.log("channel : " + channel);
+                // 채널 목록에 클릭 이벤트 리스너를 추가하는 부분
+                var channelElement = $("<li>" + channel + "</li>").click(function() {
+                    if (subscriptionChannel === channel) {
+                        alert("이미 접속 중인 채널입니다.");
+                    } else if (confirm("'" + channel + "' 채널로 이동하시겠습니까?")) {
+                        enter_channel(channel);
+                    }
+                });
+                $("#activated_channel_list").append(channelElement);
+            });
+        }
+    });
+    console.log("채널 목록 구독하기");
+}
+
+function enter_channel(channel) {
+    if (channel && channel.trim() !== "") {
+        subscriptionChannel = channel;
+        stompClient.subscribe('/sub/channel/' + subscriptionChannel, function (message) {
+            console.log("message : " + message.body);
+            showMessage(JSON.parse(message.body));
+        });
+        $("#channel_name").html("채널명: " + subscriptionChannel);
+        alert("채팅방 '" + subscriptionChannel + "'에 입장했습니다.");
+        console.log("Subscribed to channel: " + subscriptionChannel);
+
+        stompClient.send("/pub/channel-list", {}, channel);
+    } else {
+        console.log("Invalid channel. Subscription cancelled.");
+    }
 }
 
 function changeChannel() {
@@ -80,21 +146,6 @@ function sendMessage() {
     }
 }
 
-function enter_channel(channel) {
-    if (channel && channel.trim() !== "") {
-        subscriptionChannel = channel;
-        stompClient.subscribe('/sub/channel/' + subscriptionChannel, function (message) {
-            console.log("message : " + message.body);
-            showMessage(JSON.parse(message.body));
-        });
-        $("#channel_name").html("채널명: " + subscriptionChannel);
-        alert("채팅방 '" + subscriptionChannel + "'에 입장했습니다.");
-        console.log("Subscribed to channel: " + subscriptionChannel);
-    } else {
-        console.log("Invalid channel. Subscription cancelled.");
-    }
-}
-
 function showMessage(message) {
     var sender;
     if (message.sessionId === userSessionId) {
@@ -125,7 +176,6 @@ $(function () {
     // 닉네임 설정
     $("#nickname").click(function() {
         currentNickname = $("#name").val();
-        userSessionId = crypto.randomUUID();
         console.log("currentNickname : " + currentNickname);
         if (currentNickname === null || currentNickname === undefined || currentNickname === "") {
             alert("닉네임이 제대로 입력되지 않았습니다.(\"\", \" \" 등 빈 값은 입력될 수 없습니다.)")

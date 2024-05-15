@@ -1,15 +1,12 @@
 package org.example.websockettest.stomp;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
-public class Message {
+public class Enroll {
 
-    private String channelName;
-    private String sender;
+    private String nickname;
     private String sessionId;
-    private String content;
 }

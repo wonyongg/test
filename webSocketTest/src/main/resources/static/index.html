@@ -1,64 +1,139 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Stomp 채팅방입니다.</title>
-        <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/main.css" rel="stylesheet">
-        <script src="/webjars/jquery/jquery.min.js"></script>
-        <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-        <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-        <script src="/app.js"></script>
-    </head>
-    <body>
-        <noscript>
-            <h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!</h2>
-        </noscript>
-        <div id="main-content" class="container">
-            <h2>STOMP 채팅방</h2>
-            <h3 id="channel_name">채널명: </h3>
-            <h4 id="user_name">닉네임: </h4>
-            <div class="row">
-                <div class="col-md-12">
-                    <form class="form-inline">
-                        <div class="form-group">
-                            <label for="connect">WebSocket 연결하기: </label>
-                            <button id="connect" class="btn btn-default" type="button">연결</button>
-                            <button id="disconnect" class="btn btn-default" type="button" disabled="disabled">연결 해제</button>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Stomp 채팅방입니다.</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+
+</head>
+<body>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="chat-window">
+                <div class="chat-header">
+                    <div class="header-left">
+                        <h2>STOMP 채팅방</h2>
+                        <h5 id="channel_name">채널명: </h5>
+                        <h5 id="user_name">닉네임: </h5>
+                    </div>
+                    <!-- 채널 추가 시 보이도록 -->
+                    <div class="channel-list">
+                        <span id="user-count"></span>
+                        <div class="channel-list-box">
+                            <h5>채널 리스트</h5>
+                            <ul id="activated_channel_list"></ul>
                         </div>
-                        <br></br>
-                        <div class="form-group">
-                            <label for="room_name">채널명 변경: </label>
-                            <input type="text" id="room_name" class="form-control" placeholder="참여할 채팅방의 이름을 입력하세요.">
+                        <div class ="form-group-hidden" id="channel_change">
+                            <input type="text" id="room_name" class="form-control" placeholder="채널명 변경">
+                            <button id="enter_room" class="btn btn-primary" type="button" disabled="disabled">이동하기</button>
                         </div>
-                        <button id="enter_room" class="btn btn-primary" type="button" disabled="disabled">이동하기</button>
-                        <br></br>
-                        <div class="form-group">
-                            <label for="name">닉네임: </label>
-                            <input type="text" id="name" class="form-control" placeholder="닉네임을 입력하세요.">
-                            <button id="nickname" class="btn btn-primary" type="button" disabled="disabled">변경하기</button>
-                        </div>
-                        <br></br>
-                        <div class="form-group">
-                            <label for="name">메시지: </label>
-                            <input type="text" id="message" class="form-control" placeholder="메시지를 입력하세요.">
-                            <button id="send" class="btn btn-primary" type="button" disabled="disabled">보내기</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-            <div class="row" style="margin-top: 20px;">
-                <div class="col-md-12">
-                    <table id="conversation" class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>채팅</th>
-                        </tr>
-                        </thead>
-                        <tbody id="messages"></tbody>
-                    </table>
+                <form class="form-inline">
+                    <button id="connect" class="btn btn-success" type="button">연결</button>
+                    <button id="disconnect" class="btn btn-danger" type="button" disabled="disabled">연결 해제</button>
+                    <div class ="form-group-hidden">
+                        <input type="text" id="name" class="form-control" placeholder="닉네임">
+                        <button id="nickname" class="btn btn-info" type="button" disabled="disabled">변경하기</button>
+                    </div>
+                </form>
+
+                <div class ="form-group-hidden">
+                    <div class="chat-messages">
+                        <!-- 채팅 메시지가 여기에 표시됩니다. -->
+                        <table id="conversation" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <h3>채팅</h3>
+                                <hr>
+                            </tr>
+                            </thead>
+                            <tbody id="messages"></tbody>
+                        </table>
+                    </div>
+                    <div class="form-inline">
+                        <input type="text" id="message" class="form-control" placeholder="메시지를 입력하세요." style="width: 80%;">
+                        <button id="send" class="btn btn-primary" type="button" disabled="disabled" style="width: 19%;">보내기</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</div>
+</body>
 </html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--    <head>-->
+<!--        <meta charset="UTF-8">-->
+<!--        <title>Stomp 채팅방입니다.</title>-->
+<!--        <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+<!--        <link href="/main.css" rel="stylesheet">-->
+<!--        <script src="/webjars/jquery/jquery.min.js"></script>-->
+<!--        <script src="/webjars/sockjs-client/sockjs.min.js"></script>-->
+<!--        <script src="/webjars/stomp-websocket/stomp.min.js"></script>-->
+<!--        <script src="/app.js"></script>-->
+<!--        <script src="/main.css"></script>-->
+<!--    </head>-->
+<!--    <body>-->
+<!--        <noscript>-->
+<!--            <h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!</h2>-->
+<!--        </noscript>-->
+<!--        <div id="main-content" class="container">-->
+<!--            <h2>STOMP 채팅방</h2>-->
+<!--            <h3 id="channel_name">채널명: </h3>-->
+<!--            <h4 id="user_name">닉네임: </h4>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-12">-->
+<!--                    <form class="form-inline">-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="connect">WebSocket 연결하기: </label>-->
+<!--                            <button id="connect" class="btn btn-default" type="button">연결</button>-->
+<!--                            <button id="disconnect" class="btn btn-default" type="button" disabled="disabled">연결 해제</button>-->
+<!--                        </div>-->
+<!--                        <br></br>-->
+<!--                        <div class="form-group-hidden">-->
+<!--                            <label for="room_name">채널명 변경: </label>-->
+<!--                            <input type="text" id="room_name" class="form-control" placeholder="참여할 채팅방의 이름을 입력하세요.">-->
+<!--                            <button id="enter_room" class="btn btn-primary" type="button" disabled="disabled">이동하기</button>-->
+<!--                        </div>-->
+<!--                        <br></br>-->
+<!--                        <div class="form-group-hidden">-->
+<!--                            <label for="name">닉네임: </label>-->
+<!--                            <input type="text" id="name" class="form-control" placeholder="닉네임을 입력하세요.">-->
+<!--                            <button id="nickname" class="btn btn-primary" type="button" disabled="disabled">변경하기</button>-->
+<!--                        </div>-->
+<!--                        <br></br>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="row" style="margin-top: 20px;">-->
+<!--                <div class="form-group-hidden">-->
+<!--                    <table id="conversation" class="table table-striped">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <h3>채팅</h3>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody id="messages"></tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <br></br>-->
+<!--                <div class="form-group-hidden">-->
+<!--                    <label for="name">메시지: </label>-->
+<!--                    <input type="text" id="message" class="form-control" placeholder="메시지를 입력하세요.">-->
+<!--                    <br></br>-->
+<!--                    <button id="send" class="btn btn-primary" type="button" disabled="disabled">보내기</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </body>-->
+<!--</html>-->
