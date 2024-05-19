@@ -59,15 +59,10 @@ public class MessageController {
             errorResponse.put("sessionId", enroll.getSessionId());
             simpMessageSendingOperations.convertAndSend("/sub/user-list", errorResponse);
         }
-
-        for (String value : sessionMap.values()) {
-            log.info("value : {}", value);
-        }
     }
 
     @MessageMapping("/channel-list")
     public void channel(String channelName) {
-        log.info("channel: {}", channelName);
         if (!channelList.contains(channelName)) {
             channelList.add(channelName);
         }
@@ -78,7 +73,6 @@ public class MessageController {
     @SubscribeMapping("/channel-list")
     public List<String> getInitialChannelList() {
         // 채널 리스트를 가져오는 로직
-        log.info("channelList: {}", channelList);
 
         return channelList;
     }
