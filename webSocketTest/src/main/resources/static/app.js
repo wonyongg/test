@@ -216,7 +216,7 @@ $(function () {
             stompClient.send("/pub/enroll", {}, JSON.stringify(enroll));
 
             $("#name").val('');
-            alert("닉네임이 '" + currentNickname + "'(으)로 변경되었습니다.");
+            alert("닉네임을 '" + currentNickname + "'(으)로 변경합니다.");
         }
     });
 
