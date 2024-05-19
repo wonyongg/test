@@ -1,6 +1,7 @@
 var stompClient = null;
 var subscriptionChannel = null;
 var currentNickname = null;
+var exNickname = null;
 var userSessionId = null;
 
 function connect() {
@@ -26,9 +27,12 @@ function connect() {
 
         stompClient.subscribe('/sub/user-list', function (message) {
             const response = JSON.parse(message.body)
-            console.log("!!! : " + response);
-            if (response === "DUPLICATED") {
-                alert("이미 등록된 닉네임입니다.")
+            if (response.message && response.message === "DUPLICATED") {
+                $("#name").val('');
+                if (response.sessionId === userSessionId) {
+                    $("#user_name").html("닉네임: " + exNickname);
+                    alert("이미 등록된 닉네임입니다.");
+                }
             } else {
                 $("#current_user_list").empty();
                 Object.values(response).forEach((value) => {
@@ -196,6 +200,7 @@ $(function () {
 
     // 닉네임 설정
     $("#nickname").click(function() {
+        exNickname = currentNickname;
         currentNickname = $("#name").val();
         console.log("currentNickname : " + currentNickname);
         if (currentNickname === null || currentNickname === undefined || currentNickname === "") {

@@ -54,7 +54,10 @@ public class MessageController {
 
             simpMessageSendingOperations.convertAndSend("/sub/user-list", sessionMap);
         } else {
-            simpMessageSendingOperations.convertAndSend("/sub/user-list", "DUPLICATED");
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "DUPLICATED");
+            errorResponse.put("sessionId", enroll.getSessionId());
+            simpMessageSendingOperations.convertAndSend("/sub/user-list", errorResponse);
         }
 
         for (String value : sessionMap.values()) {
