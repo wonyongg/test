@@ -125,6 +125,7 @@ function enter_channel(channel) {
         console.log("Subscribed to channel: " + subscriptionChannel);
 
         stompClient.send("/pub/channel-list", {}, channel);
+        $("#room_name").val('');
     } else {
         console.log("Invalid channel. Subscription cancelled.");
     }
@@ -209,10 +210,22 @@ $(function () {
 
             stompClient.send("/pub/enroll", {}, JSON.stringify(enroll));
 
+            $("#name").val('');
             alert("닉네임이 '" + currentNickname + "'(으)로 변경되었습니다.");
         }
     });
 
     // 메시지 보내기
     $( "#send" ).click(function() { sendMessage(); });
+    $('#message').keypress(function(event) {
+        // 엔터 키의 keycode는 13입니다.
+
+        if (event.which == 13) {
+            // preventDefault를 호출하여 폼 제출을 방지합니다.
+            event.preventDefault();
+            // #send 버튼의 클릭 이벤트를 트리거합니다.
+            sendMessage();
+        }
+
+    });
 });

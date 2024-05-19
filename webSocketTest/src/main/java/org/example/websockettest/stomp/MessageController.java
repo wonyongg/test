@@ -54,7 +54,7 @@ public class MessageController {
 
             simpMessageSendingOperations.convertAndSend("/sub/user-list", sessionMap);
         } else {
-//            simpMessageSendingOperations.convertAndSend("/sub/user-list", "DUPLICATED");
+            simpMessageSendingOperations.convertAndSend("/sub/user-list", "DUPLICATED");
         }
 
         for (String value : sessionMap.values()) {
@@ -84,8 +84,6 @@ public class MessageController {
     public void message(@RequestBody Message message) {
 
         log.info("message : {}", message);
-        log.info("message.getChannelName() : {}", message.getChannelName());
-        log.info("message.getContent() : {}", message.getContent());
         simpMessageSendingOperations.convertAndSend("/sub/channel/" + message.getChannelName(), message);
     }
 }
