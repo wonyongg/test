@@ -3,27 +3,24 @@ var subscriptionChannel = null;
 var currentNickname = null;
 var exNickname = null;
 var userSessionId = null;
+var currentUsers = [];
 
 function connect() {
 
     var socket = new SockJS('/stomp');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+
+    // 유저 닉네임, 세션 아이디 생성 후 서버 등록
+    currentNickname = generateRandomString();
+    $("#user_name").html("닉네임: " + currentNickname);
+
+    var headers = {
+        "nickname" : currentNickname
+    }
+
+    stompClient.connect(headers, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        // subscribeToChannel(); // 클라이언트가 연결되면 구독 채널에 자동으로 구독합니다.
-
-        // 유저 닉네임, 세션 아이디 생성 후 서버 등록
-        currentNickname = generateRandomString();
-        userSessionId = crypto.randomUUID();
-        $("#user_name").html("닉네임: " + currentNickname);
-
-        var enroll = {
-            nickname: currentNickname,
-            sessionId: userSessionId
-        }
-
-        stompClient.send("/pub/enroll", {}, JSON.stringify(enroll));
 
         stompClient.subscribe('/sub/user-list', function (message) {
             const response = JSON.parse(message.body)
@@ -35,8 +32,13 @@ function connect() {
                 }
             } else {
                 $("#current_user_list").empty();
-                Object.values(response).forEach((value) => {
-                    $("#current_user_list").append("<li>" + value +"</li>");
+                currentUsers = [];
+                Object.keys(response).forEach((key) => {
+                    $("#current_user_list").append("<li>" + key +"</li>");
+                    currentUsers.push(key);
+                    if (key === currentNickname) {
+                        userSessionId = response[key];
+                    }
                 });
             }
         });
@@ -182,6 +184,10 @@ function showMessage(message) {
     console.log("sender : " + sender);
     console.log("content : " + content);
     $("#messages").append("<tr><td>" + sender + " : " + content + "</td></tr>");
+
+    // 자동 스크롤을 위한 코드
+    var chatMessages = $(".chat-messages");
+    chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
 }
 
 $(function () {
@@ -200,6 +206,12 @@ $(function () {
 
     // 닉네임 설정
     $("#nickname").click(function() {
+
+        if (currentUsers.includes($("#name").val())) {
+            alert("이미 등록된 닉네임입니다. 다시 입력해주세요.")
+            return;
+        }
+
         exNickname = currentNickname;
         currentNickname = $("#name").val();
         console.log("currentNickname : " + currentNickname);
@@ -209,7 +221,8 @@ $(function () {
             $("#user_name").html("닉네임: " + currentNickname);
 
             var enroll = {
-                nickname: currentNickname,
+                exNickname: exNickname,
+                changeNickname: currentNickname,
                 sessionId: userSessionId
             }
 
@@ -231,6 +244,5 @@ $(function () {
             // #send 버튼의 클릭 이벤트를 트리거합니다.
             sendMessage();
         }
-
     });
 });

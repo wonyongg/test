@@ -9,6 +9,7 @@ import java.util.Map;
 @ToString
 public class Enroll {
 
-    private String nickname;
+    private String exNickname;
+    private String changeNickname;
     private String sessionId;
 }
