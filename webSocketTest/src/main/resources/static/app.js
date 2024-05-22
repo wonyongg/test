@@ -70,7 +70,7 @@ function disconnect() {
         stompClient.disconnect();
     }
     setConnected(false);
-    console.log("Disconnected");
+    console.log("소켓 연결 해제");
 }
 
 function setConnected(connected) {
@@ -99,11 +99,9 @@ function get_channel() {
         const channelList = JSON.parse(channel_list.body);
         // 파싱된 데이터가 배열인지 확인
         if (Array.isArray(channelList)) {
-            console.log("기존 항목 초기화");
             $("#activated_channel_list").empty();
             // 배열의 각 요소(채널)를 순회하며 <li> 태그로 추가
             channelList.forEach((channel) => {
-                console.log("channel : " + channel);
                 // 채널 목록에 클릭 이벤트 리스너를 추가하는 부분
                 var channelElement = $("<li>" + channel + "</li>").click(function() {
                     if (subscriptionChannel === channel) {
@@ -123,17 +121,16 @@ function enter_channel(channel) {
     if (channel && channel.trim() !== "") {
         subscriptionChannel = channel;
         stompClient.subscribe('/sub/channel/' + subscriptionChannel, function (message) {
-            console.log("message : " + message.body);
             showMessage(JSON.parse(message.body));
         });
         $("#channel_name").html("채널명: " + subscriptionChannel);
         alert("채팅방 '" + subscriptionChannel + "'에 입장했습니다.");
-        console.log("Subscribed to channel: " + subscriptionChannel);
+        console.log("구독중인 채널: " + subscriptionChannel);
 
         stompClient.send("/pub/channel-list", {}, channel);
         $("#room_name").val('');
     } else {
-        console.log("Invalid channel. Subscription cancelled.");
+        console.log("유효하지 않은 채널로 구독 취소");
     }
 }
 
@@ -162,12 +159,6 @@ function sendMessage() {
             sessionId: userSessionId,
             content: messageContent
         };
-
-        console.log("messageContent : " + messageContent)
-        console.log("chatMessage.roomName : " + chatMessage.channelName)
-        console.log("chatMessage.name : " + chatMessage.sender)
-        console.log("chatMessage.sessionId : " + chatMessage.sessionId)
-        console.log("chatMessage.content : " + chatMessage.content)
         stompClient.send("/pub/chat", {}, JSON.stringify(chatMessage));
         $("#message").val('');
     }
@@ -181,8 +172,6 @@ function showMessage(message) {
         sender = message.sender;
     }
     var content = message.content;
-    console.log("sender : " + sender);
-    console.log("content : " + content);
     $("#messages").append("<tr><td>" + sender + " : " + content + "</td></tr>");
 
     // 자동 스크롤을 위한 코드
