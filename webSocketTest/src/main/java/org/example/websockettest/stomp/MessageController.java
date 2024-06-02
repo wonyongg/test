@@ -27,14 +27,12 @@ public class MessageController {
 
     @SubscribeMapping("/user-count")
     public int getInitialUserCount() {
-        // 채널 리스트를 가져오는 로직
 
         return webSocketEventListener.getTotalSubscriberCount();
     }
 
     @SubscribeMapping("/user-list")
     public Map<String, String> getInitialUserList() {
-        // 채널 리스트를 가져오는 로직
 
         return webSocketEventListener.getSessionMap();
     }
@@ -56,7 +54,6 @@ public class MessageController {
 
     @SubscribeMapping("/channel-list")
     public List<String> getInitialChannelList() {
-        // 채널 리스트를 가져오는 로직
 
         return channelList;
     }
