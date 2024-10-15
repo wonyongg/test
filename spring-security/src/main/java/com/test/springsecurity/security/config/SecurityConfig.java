@@ -1,6 +1,8 @@
 package com.test.springsecurity.security.config;
 
 import com.test.springsecurity.security.filter.JwtAuthenticationFilter;
+import com.test.springsecurity.security.handler.MemberAuthenticationFailureHandler;
+import com.test.springsecurity.security.handler.MemberAuthenticationSuccessHandler;
 import com.test.springsecurity.security.service.MemberDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -53,6 +55,8 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
         // 로그인 필터
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+        jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
+        jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
         http
                 .addFilter(jwtAuthenticationFilter)
