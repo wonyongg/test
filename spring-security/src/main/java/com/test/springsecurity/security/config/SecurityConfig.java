@@ -1,8 +1,10 @@
 package com.test.springsecurity.security.config;
 
+import com.test.springsecurity.redis.RedisService;
 import com.test.springsecurity.security.filter.JwtAuthenticationFilter;
 import com.test.springsecurity.security.handler.MemberAuthenticationFailureHandler;
 import com.test.springsecurity.security.handler.MemberAuthenticationSuccessHandler;
+import com.test.springsecurity.security.jwt.JwtTokenizer;
 import com.test.springsecurity.security.service.MemberDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +30,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     private final MemberDetailsService memberDetailsService;
+    private final JwtTokenizer jwtTokenizer;
+    private final RedisService redisService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,7 +57,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // 로그인 필터
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(), jwtTokenizer, redisService);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
         jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
         jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
@@ -79,5 +83,4 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
 
         return http.build();
     }
-
 }
