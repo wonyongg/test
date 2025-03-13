@@ -1,6 +1,5 @@
 package com.test.springsecurity.security.handler;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-            throws IOException, ServletException, IOException {
+            throws IOException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"" + authException.getMessage() + "\"}");
@@ -29,7 +28,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
       필터 단에서 커스텀 예외(CustomAuthenticationException)를 처리하는 메서드
      */
     public void commence(HttpServletRequest request, HttpServletResponse response, RuntimeException authException)
-            throws IOException, ServletException, IOException {
+            throws IOException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"" + authException.getMessage() + "\"}");

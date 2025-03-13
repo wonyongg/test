@@ -1,7 +1,10 @@
 package com.test.springsecurity.security.config;
 
+import com.test.springsecurity.Member.MemberRepository;
 import com.test.springsecurity.redis.RedisService;
 import com.test.springsecurity.security.filter.JwtAuthenticationFilter;
+import com.test.springsecurity.security.filter.JwtVerificationFilter;
+import com.test.springsecurity.security.handler.CustomAuthenticationEntryPoint;
 import com.test.springsecurity.security.handler.MemberAuthenticationFailureHandler;
 import com.test.springsecurity.security.handler.MemberAuthenticationSuccessHandler;
 import com.test.springsecurity.security.jwt.JwtTokenizer;
@@ -32,6 +35,8 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
     private final MemberDetailsService memberDetailsService;
     private final JwtTokenizer jwtTokenizer;
     private final RedisService redisService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final MemberRepository memberRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -62,8 +67,13 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
         jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
         jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
+        // JWT 검증 필터
+        JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, redisService, memberRepository, customAuthenticationEntryPoint);
+
         http
                 .addFilter(jwtAuthenticationFilter)
+                .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class) // JWT 검증 필터 추가
+
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .httpBasic(AbstractHttpConfigurer::disable)

@@ -1,6 +1,7 @@
 package com.test.springsecurity.Member;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
@@ -36,6 +38,8 @@ public class MemberController {
 
     @GetMapping("/members")
     public ResponseEntity<?> getMembers() {
+
+        log.debug("[ MemberController - getMembers ] Member 리스트 조회 시작!");
         List<Member> members = memberRepository.findAll();
 
         return new ResponseEntity<>(members, HttpStatus.OK);

@@ -140,9 +140,7 @@ public class JwtTokenizer {
             // 검증 시에 만든 secretKey를 사용하여 Jwt 파싱에 성공한다면
             // 해당 JWT를 만들 떄 사용한 signKey와 같은 비밀키라는 이야기므로
             // 서버에서 생성된 JWT임이 확인됨.
-            Claims claims = Jwts.parser().verifyWith(signKey).build().parseSignedClaims(jws).getPayload();
-
-            return claims;
+            return Jwts.parser().verifyWith(signKey).build().parseSignedClaims(jws).getPayload();
         } catch (SignatureException e) {
             log.error(e.getMessage());
             throw new RuntimeException("토큰이 유효하지 않습니다.");
