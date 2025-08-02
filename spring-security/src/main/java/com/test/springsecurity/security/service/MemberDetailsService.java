@@ -44,6 +44,16 @@ public class MemberDetailsService implements UserDetailsService {
             this.password = member.getPassword();
         }
 
+        private MemberDetails(String memberId, String username) {
+            this.memberId = memberId;
+            this.username = username;
+            this.password = null;
+        }
+
+        public static MemberDetails createForAuthentication(String memberId, String username) {
+            return new MemberDetails(memberId, username);
+        }
+
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return List.of();

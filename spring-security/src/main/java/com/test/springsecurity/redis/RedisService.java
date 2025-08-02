@@ -5,35 +5,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
 public class RedisService {
 
     private final RedisTemplate<String, Object> redisTemplate;
-
-    /*
-     일반 저장
-     */
-    public void saveData(String key, Object value) {
-        redisTemplate.opsForValue().set(key, value);
-    }
-
-    /*
-     특정 시간 경과 후 자동 삭제 저장
-     */
-    public void saveDataLimitTime(String key, Object value, int limitTime, TimeUnit timeUnit) {
-        redisTemplate.opsForValue().set(key, value, limitTime, timeUnit);
-    }
-
-    /*
-     Redis에 저장한 데이터 가져오기
-     */
-    public String getData(String key) {
-
-        return (String) redisTemplate.opsForValue().get(key.replace("Bearer ", ""));
-    }
 
     /*
      RefreshToken Redis에 저장
@@ -45,7 +22,7 @@ public class RedisService {
     }
 
     /*
-     AccessToken Redis에 저장
+     AccessToken Redis에 저장, 여기서는 사용 X
      */
     public void setBlackList(String key, String value, int expirationMinutes) {
         if (!key.startsWith("Bearer")) throw new RuntimeException("유효하지 않은 Access Token입니다.");
