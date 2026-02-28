@@ -7,11 +7,11 @@ import jakarta.persistence.*
 data class Member(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    val id: Long,
     
     @Column(nullable = false)
-    val name: String = "",
+    val name: String,
     
     @Column(nullable = false)
-    val age: Int = 0
+    val age: Int
 )
