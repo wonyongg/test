@@ -19,13 +19,6 @@ class MemberCacheAdapter() : BaseCacheStrategy() {
      * GetAllMembersRequestDTO일 경우: "all_members"
      */
     override fun generateCacheKey(args: Array<Any>): String {
-        if (args.isEmpty()) return "all_members"
-        
-        val firstArg = args[0]
-        return if (firstArg is GetAllMembersRequestDTO) {
-            "all_members"
-        } else {
-            firstArg.toString()
-        }
+        return "all_members"
     }
 }
