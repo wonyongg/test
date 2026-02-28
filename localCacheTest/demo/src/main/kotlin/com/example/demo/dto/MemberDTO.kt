@@ -7,9 +7,12 @@ data class MemberRequestDTO(
     val age: Int
 )
 
-data class MemberGetRequestDTO(
-    val id: Long,
+data class GetAllMembersRequestDTO(
     val isDbAccess: Boolean = false
+) : Serializable
+
+data class MemberGetRequestDTO(
+    val id: Long
 ) : Serializable
 
 data class MemberResponseDTO(

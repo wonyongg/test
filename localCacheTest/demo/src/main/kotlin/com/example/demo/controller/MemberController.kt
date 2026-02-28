@@ -1,5 +1,6 @@
 package com.example.demo.controller
 
+import com.example.demo.dto.GetAllMembersRequestDTO
 import com.example.demo.dto.MemberGetRequestDTO
 import com.example.demo.dto.MemberRequestDTO
 import com.example.demo.dto.MemberResponseDTO
@@ -16,18 +17,20 @@ class MemberController(
     
     // GET: 모든 회원 조회
     @GetMapping
-    fun getAllMembers(): ResponseEntity<List<MemberResponseDTO>> {
-        val members = memberService.getAllMembers()
+    fun getAllMembers(
+        @RequestParam(defaultValue = "false") isDbAccess: Boolean
+    ): ResponseEntity<List<MemberResponseDTO>> {
+        val request = GetAllMembersRequestDTO(isDbAccess = isDbAccess)
+        val members = memberService.getAllMembers(request)
         return ResponseEntity.ok(members)
     }
     
-    // GET: 특정 회원 조회 (캐싱 적용)
+    // GET: 특정 회원 조회
     @GetMapping("/{id}")
     fun getMemberById(
-        @PathVariable id: Long,
-        @RequestParam(defaultValue = "false") isDbAccess: Boolean
+        @PathVariable id: Long
     ): ResponseEntity<MemberResponseDTO> {
-        val request = MemberGetRequestDTO(id = id, isDbAccess = isDbAccess)
+        val request = MemberGetRequestDTO(id = id)
         val member = memberService.getMemberById(request)
         return if (member != null) {
             ResponseEntity.ok(member)
@@ -35,7 +38,7 @@ class MemberController(
             ResponseEntity.notFound().build()
         }
     }
-    
+
     // POST: 회원 생성
     @PostMapping
     fun createMember(@RequestBody requestDTO: MemberRequestDTO): ResponseEntity<MemberResponseDTO> {

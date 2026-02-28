@@ -1,6 +1,7 @@
 package com.example.demo.service
 
 import com.example.demo.annotation.LocalCache
+import com.example.demo.dto.GetAllMembersRequestDTO
 import com.example.demo.dto.MemberGetRequestDTO
 import com.example.demo.dto.MemberRequestDTO
 import com.example.demo.dto.MemberResponseDTO
@@ -15,21 +16,21 @@ class MemberService(
     private val memberRepository: MemberRepository
 ) {
     
-    // 모든 회원 조회
+    // 모든 회원 조회 (캐싱 적용)
+    @LocalCache(
+        ttlMinutes = 1,
+        cacheKeyFields = []
+    )
     @Transactional(readOnly = true)
-    fun getAllMembers(): List<MemberResponseDTO> {
-        println("📊 getAllMembers() - DB 조회")
+    fun getAllMembers(request: GetAllMembersRequestDTO): List<MemberResponseDTO> {
+        println("📊 getAllMembers(isDbAccess=${request.isDbAccess}) - DB 조회")
         return memberRepository.findAll().map { it.toResponseDTO() }
     }
     
-    // 회원 ID로 조회 (캐싱 적용)
-    @LocalCache(
-        ttlMinutes = 1,
-        cacheKeyFields = ["id"]
-    )
+    // 회원 ID로 조회
     @Transactional(readOnly = true)
     fun getMemberById(request: MemberGetRequestDTO): MemberResponseDTO? {
-        println("🔍 getMemberById(${request.id}, isDbAccess=${request.isDbAccess}) - DB 조회")
+        println("🔍 getMemberById(${request.id}) - DB 조회")
         return memberRepository.findById(request.id)
             .map { it.toResponseDTO() }
             .orElse(null)
