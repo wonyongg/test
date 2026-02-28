@@ -1,5 +1,6 @@
 package com.example.demo.controller
 
+import com.example.demo.dto.MemberGetRequestDTO
 import com.example.demo.dto.MemberRequestDTO
 import com.example.demo.dto.MemberResponseDTO
 import com.example.demo.service.MemberService
@@ -20,10 +21,14 @@ class MemberController(
         return ResponseEntity.ok(members)
     }
     
-    // GET: 특정 회원 조회
+    // GET: 특정 회원 조회 (캐싱 적용)
     @GetMapping("/{id}")
-    fun getMemberById(@PathVariable id: Long): ResponseEntity<MemberResponseDTO> {
-        val member = memberService.getMemberById(id)
+    fun getMemberById(
+        @PathVariable id: Long,
+        @RequestParam(defaultValue = "false") isDbAccess: Boolean
+    ): ResponseEntity<MemberResponseDTO> {
+        val request = MemberGetRequestDTO(id = id, isDbAccess = isDbAccess)
+        val member = memberService.getMemberById(request)
         return if (member != null) {
             ResponseEntity.ok(member)
         } else {
