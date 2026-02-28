@@ -72,7 +72,7 @@ class MemberService(
     
     // 엔티티를 ResponseDTO로 변환
     private fun Member.toResponseDTO() = MemberResponseDTO(
-        id = this.id,
+        id = this.id ?: throw IllegalStateException("Member id cannot be null"),
         name = this.name,
         age = this.age
     )
