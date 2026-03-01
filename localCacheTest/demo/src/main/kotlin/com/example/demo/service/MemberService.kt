@@ -18,8 +18,7 @@ class MemberService(
     
     // 모든 회원 조회 (캐싱 적용)
     @LocalCache(
-        ttlMinutes = 1,
-        cacheKeyFields = []
+        ttlMinutes = 1
     )
     @Transactional(readOnly = true)
     fun getAllMembers(request: GetAllMembersRequestDTO): List<MemberResponseDTO> {
